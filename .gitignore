@@ -1,0 +1,28 @@
+
+# Python virtual environment
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Local database and secrets
+users.db
+.env
+.env.*
+
+# Keep example environment template if needed
+!.env.example
+
+# IDE and OS files
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Optional: local dataset files
+# Uncomment these if you do not want datasets on GitHub
+# Fake.csv
+# True.csv
+Fake.csv
+True.csv

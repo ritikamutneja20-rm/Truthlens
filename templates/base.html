@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A transparent fake-news detection demo.">
+  <title>{% block title %}TruthLens · Fake News Detector{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">T</span><span>TruthLens<small>NEWS CHECKER</small></span></a>
+  <nav>
+    <a href="{{ url_for('home') }}">Home</a>
+    {% if session.get('user_id') %}
+      <a href="{{ url_for('dashboard') }}">Detector</a>
+      <span class="nav-user">Hi, {{ session.get('user_name', 'there') }}</span>
+      <a class="nav-cta" href="{{ url_for('logout') }}">Log out</a>
+    {% else %}
+      <a href="{{ url_for('login') }}">Log in</a>
+      <a class="nav-cta" href="{{ url_for('register') }}">Get started</a>
+    {% endif %}
+  </nav>
+</header>
+<main class="page">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}<div class="flash-stack" role="status">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+<footer class="site-footer"><span>TruthLens · Educational project</span><span>AI predictions can be wrong. Verify important claims independently.</span></footer>
+</body>
+</html>

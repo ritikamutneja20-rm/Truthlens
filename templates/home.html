@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Home · TruthLens{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="eyebrow">A clearer view of the news</div>
+  <h1>Pause. Check.<br><span>Think critically.</span></h1>
+  <p class="lead">A simple workspace to check news text with a machine-learning model. Predictions are signals to investigate—not proof that a story is true or false.</p>
+  <div class="actions">
+    {% if session.get('user_id') %}
+      <a class="button primary" href="{{ url_for('dashboard') }}">Open detector <span aria-hidden="true">→</span></a>
+    {% else %}
+      <a class="button primary" href="{{ url_for('register') }}">Create free account <span aria-hidden="true">→</span></a>
+      <a class="button secondary" href="{{ url_for('login') }}">Log in</a>
+    {% endif %}
+  </div>
+  <div class="trust-row"><span>● Private account</span><span>● Simple workflow</span><span>● Transparent results</span></div>
+</section>
+<section class="feature-grid">
+  <article class="feature-card"><div class="feature-icon">01</div><h3>Paste the story</h3><p>Enter a headline or a short news article to review.</p></article>
+  <article class="feature-card"><div class="feature-icon">02</div><h3>Run a check</h3><p>The connected model analyzes the text and returns its prediction.</p></article>
+  <article class="feature-card"><div class="feature-icon">03</div><h3>Verify independently</h3><p>Check original sources and trusted fact-checkers before sharing.</p></article>
+</section>
+{% endblock %}

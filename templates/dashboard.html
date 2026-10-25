@@ -1,0 +1,100 @@
+
+{% extends "base.html" %}
+{% block title %}Detector · TruthLens{% endblock %}
+{% block content %}
+
+<section class="dashboard-heading">
+    <div>
+        <div class="eyebrow">YOUR WORKSPACE</div>
+        <h1>News credibility check</h1>
+        <p class="lead">
+            Paste a headline or article below. Keep in mind that text alone cannot establish whether a story is true.
+        </p>
+    </div>
+
+    <div class="status-pill {% if model_available %}ready{% else %}missing{% endif %}">
+        <span></span>
+        {% if model_available %}Model files found{% else %}Model not configured{% endif %}
+    </div>
+</section>
+
+<section class="detector-layout">
+    <div class="panel detector-panel">
+        <div class="panel-heading">
+            <div>
+                <h2>Analyze news text</h2>
+                <p class="muted">Use at least 20 characters, up to 20,000.</p>
+            </div>
+            <span class="panel-number">01</span>
+        </div>
+
+        <form action="{{ url_for('predict') }}" method="post">
+            <label for="news_text">News headline or article</label>
+            <textarea id="news_text" name="news_text" rows="10"
+                      maxlength="20000" minlength="20"
+                      placeholder="Paste the news text here…"
+                      required>{{ news_text or '' }}</textarea>
+
+            <div class="textarea-meta">
+                <span>Do not include private information.</span>
+                <span id="char-count">0 / 20,000</span>
+            </div>
+
+            <button class="button primary full" type="submit">
+                Check this text <span aria-hidden="true">→</span>
+            </button>
+        </form>
+    </div>
+
+    <aside class="panel guidance">
+        <div class="panel-number">02</div>
+        <h2>Before you trust a result</h2>
+        <ul>
+            <li>Find the original publisher and author.</li>
+            <li>Look for the same report in multiple reputable outlets.</li>
+            <li>Check publication date, context, and supporting evidence.</li>
+            <li>Use established fact-checking organizations for important claims.</li>
+        </ul>
+
+        <div class="notice">
+            <strong>Important</strong>
+            <p>
+                This is an educational tool, not a definitive fact-checker. A model can misclassify genuine and fabricated stories.
+            </p>
+        </div>
+    </aside>
+</section>
+
+{% if result %}
+<section class="result-card">
+    <div class="result-label">MODEL RESULT</div>
+    <h2>{{ result }}</h2>
+
+    {% if confidence is not none %}
+    <p>Model confidence: <strong>{{ confidence }}%</strong></p>
+    {% endif %}
+
+    <p class="muted">
+        This score reflects the model's output, not the probability that the story is factually true.
+    </p>
+</section>
+{% endif %}
+
+<script>
+const textarea = document.getElementById('news_text');
+const count = document.getElementById('char-count');
+
+function updateCount() {
+    if (textarea && count) {
+        count.textContent =
+            textarea.value.length.toLocaleString() + ' / 20,000';
+    }
+}
+
+if (textarea) {
+    textarea.addEventListener('input', updateCount);
+    updateCount();
+}
+</script>
+
+{% endblock %}
